@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class LoadingManager : MonoBehaviour
 {
@@ -13,28 +14,112 @@ public class LoadingManager : MonoBehaviour
         else                  { Destroy(gameObject); }
     }
 
-    private void Start()
+    private void OnDisable()
     {
-        if(SceneManager.GetActiveScene().buildIndex != 1) // load main menu scene first, no matter the scene currently
-            FirstLoad();
+        DOTween.Kill(gameObject.GetInstanceID());
     }
 
-    // handle loading bar, show progress
+    [Header("Loading")]
+    [SerializeField] private List<CanvasGroup> backgrounds = new List<CanvasGroup>();
+    private int backgroundIndexInUse;
+
+    [Header("Fade")]
+    [SerializeField] private float fadeInTime = 0.3f;
+    [SerializeField] private float fadeOutTime = 0.5f;
+    [SerializeField] private AnimationCurve fadeCurve = null;
+
+    [Header("Slider")]
     [SerializeField] private Slider LoadingProgressBar = null;
-    public void FirstLoad()
+
+    #region Loading Animations
+    private IEnumerator FadeInBackground(bool skipAnimation = false)
     {
-        var loading = LoadSceneIndex(1);
-        LoadingProgressBar.maxValue = 1;
+        // if input larger index than available will use last background
+        backgroundIndexInUse = Random.Range(0, backgrounds.Count);
 
-        // install tween to project
-        //LoadingProgressBar.value = loading.progress;
+        if (!skipAnimation)
+        {
+            bool finishAnimation = false;
+            DOTween.Sequence()
+                .Append(backgrounds[backgroundIndexInUse].DOFade(1, fadeInTime))
+                .SetEase(fadeCurve)
+                .SetId(gameObject.GetInstanceID())
+                .OnComplete(() => {
+                    finishAnimation = true;
+                });
+            yield return new WaitUntil(() => finishAnimation);
+        }
+
+        yield return new WaitForSeconds(0.2f);
     }
+    private IEnumerator FadeOutBackground(bool skipAnimation = false)
+    {
+        if (!skipAnimation)
+        {
+            bool finishAnimation = false;
+            DOTween.Sequence()
+                .Append(backgrounds[backgroundIndexInUse].DOFade(0, fadeInTime))
+                .SetEase(fadeCurve)
+                .SetId(gameObject.GetInstanceID())
+                .OnComplete(() => {
+                    finishAnimation = true;
+                });
+            yield return new WaitUntil(() => finishAnimation);
+        }
 
-    // handle loading scenes
+        yield return new WaitForSeconds(0.2f);
+    }
+    private IEnumerator IELoadingSlider(int index, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    {
+        yield return FadeInBackground();
+
+        LoadingProgressBar.maxValue = 1;
+        var loadingOperation = LoadSceneIndex(index, loadSceneMode);
+        yield return new WaitUntil(() =>
+        {
+            LoadingProgressBar.value = loadingOperation.progress;
+            return loadingOperation.isDone;
+        });
+        yield return new WaitForSeconds(0.2f);
+
+        yield return FadeOutBackground();
+    }
+    private IEnumerator IELoadingFade(int index, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    {
+        yield return FadeInBackground();
+
+        var loadingOperation = LoadSceneIndex(index, loadSceneMode);
+        yield return new WaitUntil(() => loadingOperation.isDone);
+
+        yield return FadeOutBackground();
+    }
+    #endregion
+
+    #region Loading Calls
+    public void LoadingSlider(int index) // for buttons
+    {
+        StartCoroutine(IELoadingSlider(index));
+    }
+    public void LoadingSlider(int index, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    {
+        StartCoroutine(IELoadingSlider(index, loadSceneMode));
+    }
+    public void LoadingFade(int index) // for buttons
+    {
+        StartCoroutine(IELoadingFade(index));
+    }
+    public void LoadingFade(int index, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    {
+        StartCoroutine(IELoadingFade(index, loadSceneMode));
+    }
+    #endregion
+
+    #region Load Functions
     public AsyncOperation LoadSceneIndex(int index, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
         return SceneManager.LoadSceneAsync(index, loadSceneMode);
     }
+    #endregion
 
     // handle instantiate popups 
 }
