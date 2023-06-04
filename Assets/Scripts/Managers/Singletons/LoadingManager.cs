@@ -40,6 +40,7 @@ public class LoadingManager : MonoBehaviour
         if (!skipAnimation)
         {
             bool finishAnimation = false;
+            backgrounds[backgroundIndexInUse].gameObject.SetActive(true);
             DOTween.Sequence()
                 .Append(backgrounds[backgroundIndexInUse].DOFade(1, fadeInTime))
                 .SetEase(fadeCurve)
@@ -65,6 +66,7 @@ public class LoadingManager : MonoBehaviour
                     finishAnimation = true;
                 });
             yield return new WaitUntil(() => finishAnimation);
+            backgrounds[backgroundIndexInUse].gameObject.SetActive(false);
         }
 
         yield return new WaitForSeconds(0.2f);

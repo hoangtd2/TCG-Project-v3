@@ -14,4 +14,8 @@ public class DataManager : MonoBehaviour
     [Header("Meta Data")]
     [SerializeField] private GameplayDataSO gameplayDataSO = null;
     public GameplayDataSO GameplayData { get => gameplayDataSO; set => gameplayDataSO = value; }
+
+    [Header("Data")]
+    [SerializeField] private List<CharacterDataSO> characterProfiles = new List<CharacterDataSO>();
+    public List<CharacterDataSO> CharacterProfiles { get => characterProfiles; set => characterProfiles = value; }
 }

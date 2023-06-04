@@ -44,3 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameplayDataSO: {fileID: 11400000, guid: e29854236f751ff4b974368b1100a85c, type: 2}
+  characterProfiles:
+  - {fileID: 11400000, guid: 976b7da7566adf34e96916595958fe47, type: 2}
+  - {fileID: 11400000, guid: f31b8e1d2a8dac24a81234f48ca511ed, type: 2}
+  - {fileID: 11400000, guid: 4971b4be24e6e464cb13838c2f627195, type: 2}

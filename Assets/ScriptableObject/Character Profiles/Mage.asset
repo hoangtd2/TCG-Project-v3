@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 587e5fecf3a4bba4591fca31ce06fb8f, type: 3}
-  m_Name: Character A
+  m_Name: Mage
   m_EditorClassIdentifier: 
-  name: Character A
-  description: A basic ass motherf*cker
-  sprite: {fileID: 0}
-  maxHealth: 60
+  name: Mage
+  description: A hot-headed mage lady
+  sprite: {fileID: 21300000, guid: f9aa90b78532127448803bf2e82a8732, type: 3}
+  maxHealth: 50
   startingCoin: 100

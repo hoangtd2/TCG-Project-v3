@@ -7,9 +7,7 @@ public class StartMenuManager : MonoBehaviour
 {
     [Header("UIs")]
     [SerializeField] private Button playBtn = null;
-    private void Awake()
-    {
-    }
+
     private void Start()
     {
         InitBtnEvents();

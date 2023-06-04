@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 587e5fecf3a4bba4591fca31ce06fb8f, type: 3}
-  m_Name: Character B
+  m_Name: Gunner
   m_EditorClassIdentifier: 
-  name: Character B
-  description: Another basic ass motherf*cker
-  maxHealth: 60
+  name: Gunner
+  description: He can snipe with a piston?
+  sprite: {fileID: 21300000, guid: 22c3cd5b04fef704891512ec88add767, type: 3}
+  maxHealth: 55
   startingCoin: 100
