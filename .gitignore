@@ -1,6 +1,7 @@
 logs/
 Library/
 obj/
+Temp/
 
 *.csproj
 *.sln
