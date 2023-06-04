@@ -69,12 +69,12 @@ public class LoadingManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.2f);
     }
-    private IEnumerator IELoadingSlider(int index, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    private IEnumerator IELoadingSlider(string sceneName, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
         yield return FadeInBackground();
 
         LoadingProgressBar.maxValue = 1;
-        var loadingOperation = LoadSceneIndex(index, loadSceneMode);
+        var loadingOperation = LoadSceneIndex(sceneName, loadSceneMode);
         yield return new WaitUntil(() =>
         {
             LoadingProgressBar.value = loadingOperation.progress;
@@ -84,11 +84,11 @@ public class LoadingManager : MonoBehaviour
 
         yield return FadeOutBackground();
     }
-    private IEnumerator IELoadingFade(int index, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    private IEnumerator IELoadingFade(string sceneName, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
         yield return FadeInBackground();
 
-        var loadingOperation = LoadSceneIndex(index, loadSceneMode);
+        var loadingOperation = LoadSceneIndex(sceneName, loadSceneMode);
         yield return new WaitUntil(() => loadingOperation.isDone);
 
         yield return FadeOutBackground();
@@ -96,28 +96,28 @@ public class LoadingManager : MonoBehaviour
     #endregion
 
     #region Loading Calls
-    public void LoadingSlider(int index) // for buttons
+    public void LoadingSlider(string sceneName) // for buttons
     {
-        StartCoroutine(IELoadingSlider(index));
+        StartCoroutine(IELoadingSlider(sceneName));
     }
-    public void LoadingSlider(int index, LoadSceneMode loadSceneMode)
+    public void LoadingSlider(string sceneName, LoadSceneMode loadSceneMode)
     {
-        StartCoroutine(IELoadingSlider(index, loadSceneMode));
+        StartCoroutine(IELoadingSlider(sceneName, loadSceneMode));
     }
-    public void LoadingFade(int index) // for buttons
+    public void LoadingFade(string sceneName) // for buttons
     {
-        StartCoroutine(IELoadingFade(index));
+        StartCoroutine(IELoadingFade(sceneName));
     }
-    public void LoadingFade(int index, LoadSceneMode loadSceneMode)
+    public void LoadingFade(string sceneName, LoadSceneMode loadSceneMode)
     {
-        StartCoroutine(IELoadingFade(index, loadSceneMode));
+        StartCoroutine(IELoadingFade(sceneName, loadSceneMode));
     }
     #endregion
 
     #region Load Functions
-    public AsyncOperation LoadSceneIndex(int index, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    public AsyncOperation LoadSceneIndex(string sceneName, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
-        return SceneManager.LoadSceneAsync(index, loadSceneMode);
+        return SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
     }
     #endregion
 

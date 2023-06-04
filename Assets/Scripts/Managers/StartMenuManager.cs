@@ -7,7 +7,9 @@ public class StartMenuManager : MonoBehaviour
 {
     [Header("UIs")]
     [SerializeField] private Button playBtn = null;
-
+    private void Awake()
+    {
+    }
     private void Start()
     {
         InitBtnEvents();
@@ -15,6 +17,6 @@ public class StartMenuManager : MonoBehaviour
 
     private void InitBtnEvents()
     {
-        playBtn.onClick.AddListener(() => { LoadingManager.instance.LoadingSlider(1); });
+        playBtn.onClick.AddListener(() => { LoadingManager.instance.LoadingSlider("MainMenu"); });
     }
 }
